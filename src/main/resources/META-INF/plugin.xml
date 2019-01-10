@@ -1,0 +1,26 @@
+<idea-plugin>
+    <id>com.joacocampero.liquibase-idea-plugin</id>
+    <name>Liquibase Support</name>
+    <vendor email="joaquin@redbee.io" url="https://redbee.io">redbee</vendor>
+
+    <description><![CDATA[
+    Add support when working with liquibase:
+     - Code completition
+     - Annotators
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <completion.contributor language="JSON"
+                                implementationClass="com.joacocampero.liquibaseideaplugin.LiquibaseCompletionContributor"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
