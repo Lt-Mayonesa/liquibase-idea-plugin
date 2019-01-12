@@ -18,6 +18,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <completion.contributor language="JSON"
                                 implementationClass="com.joacocampero.liquibaseideaplugin.LiquibaseCompletionContributor"/>
+        <annotator language="JSON" implementationClass="com.joacocampero.liquibaseideaplugin.LiquibaseJsonAnnotator"/>
     </extensions>
 
     <actions>
