@@ -1,0 +1,369 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://redbee.io/liquibase.json",
+  "title": "The Root Schema",
+  "type": "object",
+  "required": [
+    "databaseChangeLog"
+  ],
+  "properties": {
+    "databaseChangeLog": {
+      "$id": "#/properties/databaseChangeLog",
+      "type": "array",
+      "title": "The databaseChangeLog Schema",
+      "required": [
+        "changeSet"
+      ],
+      "items": {
+        "type": "object",
+        "title": "The Items inside databaseChangeLog Schema",
+        "properties": {
+          "preConditions": {
+            "$ref": "#/definitions/preConditions"
+          },
+          "changeSet": {
+            "$ref": "#/definitions/changeSet"
+          },
+          "rollback": {
+            "type": "object",
+            "properties": {
+              "or": {
+                "type": "array",
+                "description": "Array / Object"
+              },
+              "and": {
+                "type": "array",
+                "description": "Array / Object"
+              },
+              "not": {
+                "type": "array",
+                "description": "Array / Object"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "conditional": {
+      "allOf": [
+
+        {
+          "type": "object",
+          "properties": {
+            "and": {
+              "$ref": "#/definitions/conditional"
+            },
+            "not": {
+              "$ref": "#/definitions/conditional"
+            },
+            "or": {
+              "$ref": "#/definitions/conditional"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/condition"
+        }
+      ]
+    },
+    "condition": {
+      "type": "object",
+      "properties": {
+        "dbms": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "description": "Passes if the database executed against matches the type specified.",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "MySQL",
+                "PostgreSQL",
+                "Oracle",
+                "Sql Server",
+                "Sybase_Enterprise",
+                "Sybase_Anywhere",
+                "DB2",
+                "Apache Derby",
+                "HSQL",
+                "H2",
+                "Informix",
+                "Firebird",
+                "SQLite"
+              ],
+              "description": "Type of database expected. Multiple dbms values can be specified using comma separated values."
+            }
+          }
+        },
+        "runningAs": {
+          "type": "object",
+          "required": [
+            "username"
+          ],
+          "description": "Passes if the database user executed under matches the username specified.",
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "Database user script is expected to run as."
+            }
+          }
+        },
+        "changeSetExecuted": {
+          "type": "object",
+          "required": [
+            "id",
+            "author",
+            "changeLogFile"
+          ],
+          "description": "Passes if the specified change set has already been executed. Since 1.8",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Change set \"id\""
+            },
+            "author": {
+              "type": "string",
+              "description": "Change set \"author\"."
+            },
+            "changeLogFile": {
+              "type": "string",
+              "description": "File name (including classpath relative path) of change set."
+            }
+          }
+        },
+        "columnExists": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/columnAction"
+            },
+            {
+              "type": "object",
+              "required": [
+                "schemaName",
+                "tableName",
+                "columnName"
+              ],
+              "description": "Passes if the specified column exists in the database. Since 1.8"
+            }
+          ]
+        },
+        "tableExists": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/tableAction"
+            },
+            {
+              "type": "object",
+              "required": [
+                "schemaName",
+                "tableName"
+              ],
+              "description": "Passes if the specified table exists in the database."
+            }
+          ]
+        },
+        "viewExists": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/viewAction"
+            },
+            {
+              "required": [
+                "schemaName",
+                "viewName"
+              ],
+              "description": "Passes if the specified view exists in the database. Since 1.8"
+            }
+          ]
+        },
+        "foreignKeyConstraintExists": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/foreignKeyAction"
+            },
+            {
+              "description": "Passes if the specified foreign key exists in the database. Since 1.8",
+              "required": [
+                "schemaName",
+                "foreignKeyName"
+              ]
+            }
+          ]
+        },
+        "indexExists": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/indexAction"
+            },
+            {
+              "description": "Passes if the specified index exists in the database. Since 1.8",
+              "required": [
+                "schemaName",
+                "indexName"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "preConditions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/preCondition"
+      }
+    },
+    "preCondition": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/condition"
+        },
+        {
+          "$ref": "#/definitions/conditional"
+        },
+        {
+          "type": "object",
+          "required": [
+            "onFail",
+            "onFailMessage"
+          ],
+          "properties": {
+            "onFail": {
+              "type": "string",
+              "enum": [
+                "HALT",
+                "CONTINUE",
+                "MARK_RAN",
+                "WARN"
+              ]
+            },
+            "onFailMessage": {
+              "type": "string"
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "HALT",
+                "CONTINUE",
+                "MARK_RAN",
+                "WARN"
+              ]
+            },
+            "onErrorMessage": {
+              "type": "string"
+            },
+            "onUpdateSQL": {
+              "type": "string",
+              "enum": [
+                "RUN",
+                "FAIL",
+                "IGNORE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "schemaAction": {
+      "type": "object",
+      "properties": {
+        "schemaName": {
+          "type": "string",
+          "description": " Name of the schema."
+        }
+      }
+    },
+    "tableAction": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/schemaAction"
+        },
+        {
+          "properties": {
+            "tableName": {
+              "type": "string",
+              "description": "Name of the table."
+            }
+          }
+        }
+      ]
+    },
+    "columnAction": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/tableAction"
+        },
+        {
+          "properties": {
+            "columnName": {
+              "type": "string",
+              "description": "Name of the column."
+            }
+          }
+        }
+      ]
+    },
+    "viewAction": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/schemaAction"
+        },
+        {
+          "properties": {
+            "viewName": {
+              "type": "string",
+              "description": "Name of the view."
+            }
+          }
+        }
+      ]
+    },
+    "foreignKeyAction": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/schemaAction"
+        },
+        {
+          "properties": {
+            "foreignKeyName": {
+              "type": "string",
+              "description": "Name of the foreign key."
+            }
+          }
+        }
+      ]
+    },
+    "indexAction": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/schemaAction"
+        },
+        {
+          "properties": {
+            "indexName": {
+              "type": "string",
+              "description": "Name of the index."
+            }
+          }
+        }
+      ]
+    },
+    "changeSet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    }
+  }
+}

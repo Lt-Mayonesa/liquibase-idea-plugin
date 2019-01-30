@@ -1,0 +1,17 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "onFail": "HALT",
+          "onFailMessage": "asdf"
+        }
+      ]
+    },
+    {
+      "rollback": {
+
+      }
+    }
+  ]
+}
