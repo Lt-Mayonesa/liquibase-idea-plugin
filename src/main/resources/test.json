@@ -1,16 +1,32 @@
 {
   "databaseChangeLog": [
     {
-      "preConditions": [
-        {
-          "onFail": "HALT",
-          "onFailMessage": "asdf"
-        }
-      ]
-    },
-    {
-      "rollback": {
-
+      "changeSet": {
+        "id": "1",
+        "author": "jcampero",
+        "preConditions": [
+          {
+            "onFail": "HALT",
+            "onFailMessage": "",
+            "not": {
+            }
+          }
+        ],
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "mytable",
+              "columns": [
+                {
+                  "name": "adsf",
+                  "type": "boolean"
+                }
+              ]
+            }
+          }
+        ],
+        "rollback": [
+        ]
       }
     }
   ]
