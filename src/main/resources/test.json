@@ -14,15 +14,7 @@
         ],
         "changes": [
           {
-            "createTable": {
-              "tableName": "mytable",
-              "columns": [
-                {
-                  "name": "adsf",
-                  "type": "boolean"
-                }
-              ]
-            }
+
           }
         ],
         "rollback": [

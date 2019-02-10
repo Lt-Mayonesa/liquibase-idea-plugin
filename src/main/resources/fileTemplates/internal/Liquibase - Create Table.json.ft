@@ -1,0 +1,46 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "${ID}",
+        "author": "${AUTHOR}",
+        "preConditions": [
+          {
+            "onFail": "MARK_RAN",
+            "onFailMessage": "La tabla ${TABLE_NAME} ya existe",
+            "not": {
+              "tableExists": {
+                "schemaName": "dbo",
+                "tableName": "${TABLE_NAME}"
+              }
+            }
+          }
+        ],
+        "changes": [
+          {
+            "createTable": {
+              "schemaName": "dbo",
+              "tableName": "${TABLE_NAME}",
+              "columns": [
+                {
+                  "column": {
+                    "name": "${FIRST_COLUMN_NAME}",
+                    "type": "${FIRST_COLUMN_TYPE}"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "rollback": [
+          {
+            "dropTable": {
+              "schemaName": "dbo",
+              "tableName": "${TABLE_NAME}"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

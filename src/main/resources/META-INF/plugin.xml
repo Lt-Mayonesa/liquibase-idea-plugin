@@ -16,11 +16,12 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <completion.contributor language="JSON"
-                                implementationClass="com.joacocampero.liquibaseideaplugin.LiquibaseCompletionContributor"/>
-        <annotator language="JSON"
-                   implementationClass="com.joacocampero.liquibaseideaplugin.annotator.LiquibaseJsonAnnotator"/>
-
+        <fileTemplateDefaultExtension value="json" />
+        <internalFileTemplate name="Liquibase - Create Table" subject="Script for creating a new table"/>
+        <!--<completion.contributor language="JSON"-->
+                                <!--implementationClass="com.joacocampero.liquibaseideaplugin.LiquibaseCompletionContributor"/>-->
+        <!--<annotator language="JSON"-->
+                   <!--implementationClass="com.joacocampero.liquibaseideaplugin.annotator.LiquibaseJsonAnnotator"/>-->
         <localInspection implementationClass="com.joacocampero.liquibaseideaplugin.provider.UsageInspectionProvider"
                          language="JSON" enabledByDefault="true"/>
     </extensions>
@@ -28,4 +29,9 @@
     <actions>
         <!-- Add your actions here -->
     </actions>
+    <module-components>
+        <component>
+            <implementation-class>com.joacocampero.liquibaseideaplugin.LiquibaseSchemaSetupComponent</implementation-class>
+        </component>
+    </module-components>
 </idea-plugin>

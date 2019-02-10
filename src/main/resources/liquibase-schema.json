@@ -1084,6 +1084,31 @@
               }
             }
           ]
+        },
+        "customChange": {
+          "type": "object",
+          "description": "To create your own custom refactoring, simply create a class that implements the liquibase.change.custom.CustomSqlChange or liquibase.change.custom.CustomTaskChange interface and use the <custom> tag in your change set."
+        },
+        "delete": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/tableAction"
+            },
+            {
+              "$ref": "#/definitions/catalogAction"
+            },
+            {
+              "type": "object",
+              "description": "Deletes data from an existing table",
+              "required": ["tableName"],
+              "properties": {
+                "where": {
+                  "type": "string",
+                  "description": "An SQL WHERE condition (without the WHERE)"
+                }
+              }
+            }
+          ]
         }
       }
     },
